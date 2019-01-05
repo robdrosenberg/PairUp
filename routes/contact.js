@@ -1,6 +1,10 @@
 var express = require('express');
 var router = express.Router();
 
+var nodemailer = require('nodemailer');
+var config = require('../config');
+var transporter = nodemailer.createTransport(config.mailer);
+
 /* GET contact page and post contact form submission */
 router.route('/')
   .get(function (req, res, next) {
@@ -22,7 +26,21 @@ router.route('/')
       })
       // console.log(name);
     } else {
-      res.render('thank', { title: 'Thank You' });
+
+      var mailOptions = {
+        from: 'PairUp <no-reply@pairup.com>',
+        to: process.env.EMAIL,
+        subject: 'You got a new message on PairUp!',
+        text:"Email: " + req.body.email + "\n" + "Name: " + req.body.name + "\n" + "Message: " + req.body.message
+      };
+
+      transporter.sendMail(mailOptions, function(error, info){
+        if(error){
+          return console.log(error);
+        } else{
+          res.render('thank', { title: 'Thank You' });
+        }
+      });
     }
     
   });
