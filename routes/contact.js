@@ -7,7 +7,24 @@ router.route('/')
     res.render('contact', { title: 'Contact' });
   })
   .post(function(req, res, next){
-    res.render('thank', {title: 'Thank You'});
+    req.checkBody('name', 'Empty name').notEmpty();
+    req.checkBody('email', 'Invalid email').isEmail();
+    req.checkBody('message', 'Empty Message').notEmpty();
+    var errors = req.validationErrors();
+    
+    if(errors){
+      res.render('contact', {
+        title: 'PairUp',
+        name: req.body.name,
+        email: req.body.email,
+        message: req.body.message,
+        errorMessages: errors
+      })
+      // console.log(name);
+    } else {
+      res.render('thank', { title: 'Thank You' });
+    }
+    
   });
 
 module.exports = router;
