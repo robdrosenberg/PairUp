@@ -5,13 +5,19 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
 var expressValidator = require('express-validator');
-var dotenv = require('dotenv').config()
+var dotenv = require('dotenv').config();
+
+var mongoose = require('mongoose');
+var config = require('./config');
 
 var indexRouter = require('./routes/index');
 var aboutRouter = require('./routes/about');
 var contactRouter = require('./routes/contact');
 var loginRouter = require('./routes/login');
 var registerRouter = require('./routes/register');
+
+mongoose.connect(config.dbConnstring);
+global.User = require('./models/user');
 
 var app = express();
 
