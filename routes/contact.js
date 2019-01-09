@@ -23,7 +23,7 @@ router.route('/')
         email: req.body.email,
         message: req.body.message,
         errorMessages: errors
-      })
+      });
       // console.log(name);
     } else {
 

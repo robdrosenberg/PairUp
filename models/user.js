@@ -1,4 +1,4 @@
-var mongoose = require('mongoose')
+var mongoose = require('mongoose');
 var crypto = require('crypto');
 
 var userSchema = new mongoose.Schema({
@@ -23,6 +23,6 @@ userSchema.methods.setPassword = function(password){
 userSchema.methods.validPassword = function(password){
   var hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64, 'sha1').toString('hex');
   return this.hash === hash;
-}
+};
 
 module.exports = mongoose.model('User', userSchema);
